@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --accent-color: #4a5ce6;
+  --accent-bg: #7369ee;
+  --main-bg: #303942;
+  --secondary-bg: #252e35;
+  --main-color: #8e9bab;
+  --white: #e5dcff;
+}
+
+body {
+  color: var(--main-color);
+  background-color: var(--main-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  height: 65px;
+  background-color: var(--secondary-bg);
+  box-shadow: 0 2px 10px var(--secondary-bg);
+  border-bottom: 1px solid var(--main-bg);
+  align-items: center;
+  padding: 0 1rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  /* gap: 1rem; */
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+nav ul li a {
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 5px;
+  line-height: 1.7;
+  transition: 0.3s;
+  border-radius: 0.5rem;
+}
+
+nav ul li a:hover {
+  background: var(--main-bg);
+}
+
+nav .logo {
+  font-weight: 900;
+  font-size: 2rem;
+  font-family: cursive;
+  padding: 0.25rem 1.5rem;
+  color: var(--main-color);
+}
+
+nav .account {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px double var(--accent-bg);
+  height: 50px;
+  width: 50px;
+}
+
+nav .accountImg {
+  object-fit: cover;
+  object-position: top;
+  height: 50px;
+  width: 50px;
+}
+
+.dot {
+  display: inline-block;
+  height: 4px;
+}
+
+.dot::after {
+  content: ".";
+  font-size: xx-large;
+  line-height: 0.4;
+}
+
+:is(button, .btn) {
+  cursor: pointer;
+  border: 0;
+  background-color: var(--accent-bg);
+  color: var(--white);
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  position: relative;
+  overflow: hidden;
+  --translateX: 0;
+  --translateY: 0;
+  --scale: 1;
+  transform: translateX(var(--translateX)) translateY(var(--translateY))
+    scale(var(--scale));
+}
+
+:is(button, .btn):hover::after {
+  content: "";
+  background-color: rgba(20, 20, 20, 0.3);
+  position: absolute;
+  inset: 0;
+}
+
+:is(button, input, .btn):focus {
+  --scale: 1.05;
+  box-shadow: 0 0 1px 2px var(--main-color);
+}

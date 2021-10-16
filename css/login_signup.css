@@ -1,0 +1,148 @@
+	body{
+		font-family: "Trebuchet MS", Helvetica, sans-serif!important;
+	}
+	*{
+		box-sizing: border-box;
+	}
+	body{
+		margin: 0;
+		padding: 2px;
+		background: powderblue;
+	}
+	.container{
+		max-width: 500px;
+		margin: 0 auto;
+		border-radius: 20px!important;
+		padding: 20px;
+		border-radius: 3px;
+	}
+	label{
+		font-weight: bold;
+		padding: 8px 0!important;
+		display: block;
+	}
+
+	input[type="email"],
+	input[type="text"],
+	input[type="password"]{
+		padding: 5px 20px!important;
+		width: 100%;
+		border-radius: 10px;
+		border: 2px solid dodgerblue;
+		outline-color: transparent!important;
+	}
+	input[type="submit"],
+	input[type="button"]{
+		border-radius: 5px;
+		border: 0;
+		font-weight: bolder;
+		padding: 10px 20px!important;
+		display: inline;
+	}
+	input[type="submit"]:hover,
+	input[type="button"]:hover{
+		cursor: pointer;
+	}
+	p#error,
+	p#success,
+	p#info{
+		font-family: "Open SANS",
+		sans-serif;
+		width: 100%;
+		margin: 5px auto;
+		font-variant: small-caps;
+		padding: 8px;
+		text-align: center;
+		font-weight: bolder;
+		border-radius: 5px;
+	}
+	p#error{
+		color: red;
+		border: 2px solid red;
+		text-shadow: 0 0 20px crimson;
+		box-shadow: 0 0 20px crimson;
+		background-color: ghostwhite;
+	}
+	p#success{
+		color: green;
+		border: 2px solid green;
+		background-color: ghostwhite;
+		text-shadow: 0 0 20px forestgreen;
+		box-shadow: 0 0 20px forestgreen;}
+	p#info{
+		color: dodgerblue;
+		border: 2px solid dodgerblue;
+		background-color: ghostwhite;
+		text-shadow: 0 0 20px skyblue;
+		box-shadow: 0 0 20px skyblue;}
+	.btm{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0;
+		margin-top: 10px;
+	}
+	.required{
+		color: red;
+		font-size: 12px;
+	}
+	#radio{
+		display: flex;
+		width: 100%;
+		justify-content: space-around;
+		align-items: center;
+	}
+	#radio .radio{
+		border: 2px solid dodgerblue;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 33%;
+		border-radius: 10px;
+	}
+	@media only screen and (max-width: 320px) {
+		#radio, .date, .btm{
+			flex-direction: column;
+			justify-content: flex-start;
+		}
+		input[type="submit"],
+		input[type="button"]{
+			width: 100%;
+			border: 0;
+		}
+		.radio, select{
+			width: 80%!important;
+			margin: auto;
+		}
+	}
+	input[type="radio"]{
+		position: relative;
+		top: 3px;
+		top: 100%;
+		left: 0;
+		height: 18px;
+		width: 18px;
+	}
+
+	.pwd{
+		position: relative;
+		display: flex;
+	}
+	.pwd .fa{
+		position: absolute;
+		right: 7px;
+		top: 7px;
+		color: dodgerblue!important;
+		z-index: 5;
+		font-size: 20px;
+	}
+	.date{
+		display: flex;
+		justify-content: space-around;
+	}
+	.date select{
+		width: 33%;
+		border: 2px solid dodgerblue;
+		padding: 3px;
+		border-radius: 5px;
+	}

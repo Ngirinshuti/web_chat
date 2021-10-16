@@ -1,0 +1,260 @@
+		*{box-sizing: border-box; transition: ease-in-out 0.2us;}
+		html, body{font-family: "Open sans", sans-serif; margin: 0; padding: 0;}
+		a{text-decoration: none;}
+		.header{
+			background-color: ghostwhite; 
+			box-shadow: 0 2px 1.3px 0 rgba(0, 0, 0, 0.4), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+			width: 100%;
+			position: sticky;
+			z-index: 9; 
+			top: -1px;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.header .left{
+			flex: 30%;
+			width: 90%;
+			padding: 0;	
+		}
+		.header .left input{
+			border: 1px solid green;
+			border-radius: 5px;
+			padding: 0 5px;
+			width: 80%;
+		}
+		.header .left img{
+				border-radius: 50%;
+				width: 20%;
+				height: auto;
+                transition: width 1.5s;
+				margin-left: 4px;
+		}
+		.header ul {
+			
+			display: flex;
+			float: right;
+			justify-content: flex-end;
+			padding: 0;
+		}
+		.header ul li{
+			list-style: none;
+			margin: 0 3vw;
+			text-transform: capitalize;
+			cursor: pointer;
+			padding: 10px;
+			font-weight: bold;
+		}
+		.header ul li:hover{
+			background-color: powderblue;
+			color: darkgreen;
+		}
+		.rows{
+			width: 100%;
+			display: block;
+			display: flex;
+			margin-top: 5px;
+			flex-direction: column;
+		}
+		.east{
+			flex: 68%;
+			background-color: ghostwhite;
+			padding: 10px;
+		}
+		.west{
+			flex: 30%;
+			text-align: center;
+			background-color: ghostwhite;
+			padding: 7px;
+		}
+		.west img{
+			width: 100%;
+			margin: 3px;
+			border-radius: 6px;
+		}
+		.welcome{
+			text-align: center;
+			color: green;
+			font-family: "candara", sans-serif;
+			border-radius: 0 0 7px 7px;
+			padding: 2px;
+			font-size: 3.5vw;
+			display: inline;
+		}
+		.footer {
+            background-color: beige;
+            color: #000000;
+            text-align: center;
+            font-size: 12px;
+            padding: 15px; 
+            margin-top: 14px;
+        }          
+
+		@media only screen and (min-width: 700px){
+			.header{
+				flex-direction: row;
+				align-items: center;
+			}
+			.rows{
+				flex-direction: row;
+			}			
+			.header .left{
+				flex: 30%;
+			    width: auto;
+			    align-items: center;	
+			}
+			.header ul{
+				justify-content: flex-end;
+				flex: 70%;
+			    height: 100%;
+			} 
+			.header ul li{
+				margin:  auto 20px;
+			} 
+			.east{
+				margin-left: 10px; 
+			}
+		} 
+		    .user-box{
+		    	width: 100%;
+		    	display: flex;
+		    	flex-direction: column;
+		    	align-items: center;
+		    }
+		    .user-image{
+		    	width: 75%;
+		    }
+		    .friend-info, .user-info{
+		    	list-style: none;
+		    	padding: 10px;
+		    }
+		    .user-info li{
+		    	font-family: verdana, sans-serif;
+		    	font-size: 18px;
+		    	font-weight: lighter;
+		    	text-align: left;
+		    }
+		    .friend-info li:hover, .user-info li:hover{
+		    	cursor: pointer;
+		    	color: darkgreen;
+		    	border-radius: 5px;
+		    	background-color: rgba(0, 0, 0, 0.4);
+		    }
+		    .friend-box{
+		    	width: 100%;
+		    	padding: 10px;
+		    	display: flex;
+		    	align-items: center;
+		    	flex-wrap: wrap;
+		    }
+		    .friend-image{
+		    	max-width: 20%;
+		    }
+		    .friend-image img{
+		    	border-radius: 10px;
+		    	max-width: 100%;
+		    	object-fit: contain;
+		    	height: auto;
+		    }
+		    .friend-info li{
+		    	display: inline;
+		    	margin: auto 5px;
+		    	padding: 5px;
+		    	font-size: 16px;
+		    	background-color: cornsilk;
+		    }
+		    .badge-red{
+		    	background: darkred;
+		    	border-radius: 50%;
+		    	padding: 0 6px;
+		    	margin: 1.5px;
+		    	font-size: 16px;
+		    	font-weight: bold;
+		    	color: white;
+		    	position: relative;
+		    }
+		    .req-user{
+		    	font-weight: bold;
+		    }
+		    .badge{
+		    	background: black;
+		    	border-radius: 50%;
+		    	padding: 0 6px;
+		    	margin: 1.5px;
+		    	font-size: 16px;
+		    	font-weight: bold;
+		    	color: beige;
+		    	position: relative;
+		    }
+		    .accept{
+		    	color: green;
+		    }
+		    .remove{
+		    	color: red;
+		    }
+		    .accept:hover, .remove:hover{
+		    	font-weight: bold;
+		    	background-color: lightgray;
+		    }
+		    .accept, .remove{
+		    	cursor: pointer;
+		    	padding: 4px 2px;
+		    	font-size: 16px;
+		    	margin: 10px;
+		    	font-family: "comic sans ms", sans-serif;
+		    }
+		    #cancel{
+		    	padding: 5px 40px;
+		    	color: white;
+		    	margin: 10px auto;
+		    	background-color: lightcoral;
+		    }
+		    #cancel:hover{
+		    	color: darkred;
+		    	font-weight: bold;
+		    	cursor: pointer;
+		    }
+		    #middle{
+		    	margin-top: 0;
+		    	color: gray;
+		    	display: inline;
+		    	padding: 0;
+		    }
+		    #middle:hover{
+		    	background-color: ghostwhite;
+		    	color: gray;
+		    }
+		    span{display: inline;}
+		    #friendship{
+		    	background-color: mediumseagreen;
+		    	color: #FFCC00;
+		    	padding: 2px 10px;
+		    }
+		    .mutual{
+		    	display: block; 
+		    	cursor: pointer;
+		    	margin-bottom: 4px; 
+		    	color: grey;
+		    }
+		    .mutual:hover{
+		    	color: black;
+		    }
+		    .mutual-friends{
+		    	display: none;
+		    	padding: 3px;
+		    	color: grey;
+		    	margin: 4px auto;
+		    	position: absolute;
+		    	z-index: 5;
+		    	left: 23%;
+		    	flex-direction: column;
+		    	text-align: left;
+		    	border-radius: 10px;
+		    	background-color: lightgreen;
+		    }
+		    .mutual-friends p{
+		    	padding: 3px;
+		    	margin: 2px;
+		    }

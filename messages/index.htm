@@ -1,0 +1,222 @@
+<html lang="en" dir="ltr">
+
+<head>
+<title>Our Chat Nation</title>
+<link rel="stylesheet" href="w3.css">
+<style media="screen">
+  * {box-sizing: border-box;}
+  body, html{font-family: Verdana, sans-serif; margin: 0; padding: 0; width: 100%; height: 100%; overflow-y: auto; background-color: rgba(0,0,0,0.7);}
+  .top{display: flex; flex-direction: row; background-color: lightgreen; position: relative;}
+  .top img.image{border-radius: 50%;display: inline; padding: 10px; width: 60px; height: 60px;}
+  .top h2{display: inline;}
+  form.login{position: absolute; right: 0; background-color: lightgrey; text-align: center; padding: 7.5px;}
+  .top form.login input{padding: 5px; border: 0; text-align: center; border-bottom: 2px solid green;}
+  .top form.login input:focus{border-color: blue; outline-color: lightgray;}
+  .top form.login input[type="submit"]{border-radius: 5px;}
+  .top form.login input[type="submit"]:hover{background-color: rgba(0, 160, 0, 1.0); font-weight: bolder; padding: 5px;}
+  .container{position: relative; display: flex; flex-wrap: nowrap; margin-top: 10px; background-color: ghostwhite; width: 100%;  background-image: url("w3images/forest.jpg"); background-size: cover; background-position: center;}
+  .left{flex: 50%; background-color: lightgray; padding: 0;}
+  .left .overlay{width: 100%;}
+  .left img.mySlides{display: none; animation: inp 0.5s ease-in 1; z-index: -2;}
+  .right{flex: 50%; background-color: rgba(60,40,50,0.6); font-weight: bolder; padding: 2px; margin-left: 5px;}
+  form.signup {display: flex; flex-wrap: wrap; font-family: sans-serif; font-style: normal; overflow-x: hidden;background-color: rgba(0, 0, 0, 0.3); border-radius: 5px; width: 100%;position: relative; border: 0; padding: 0; animation: inp 0.5s ease-in 1;}
+  form.signup span.toggle {text-align: right;}
+  form.signup .sex { position: relative; font-weight: bold; text-align: center; top: -2px;}
+  form.signup label {font: normal bold 16px verdana; display: none; }
+  form.signup input,select,textarea {background-color: lightgray;border: 0; border-bottom: 3px solid green; margin: 5px; font-size: 15px; width: 100%;text-align: center; display: block;}
+  @keyframes inp {from{opacity: 0.3;} to{transform:scale(1); opacity: 1;}}
+  form.signup input:focus, textarea:focus,select:focus{border-color: blue; font: normal bold 16px;outline-width: 0; border-radius: 0;}
+  form.signup input[type="text"], input[type="file"], input[type="password"] { padding: 5px; }
+  form.signup input[type="submit"]:hover {border-radius: 5px; background-color: rgba(0, 160, 0, 1.0); font-weight: bolder;}
+  form.signup select{text-align: center;}
+
+  form.signup p{padding: 3px; margin: 0;}
+  form.signup input[type="file"]{color: black; font-weight: bold;}
+  form.signup input[type="submit"] {display: block; width: 100%; border: 0; padding: 10px; background: green; border-radius: 5px;}
+  form.signup p.btns{display: inline;}
+  form.signup p.btns span {display: inline-block; background-color: ghostwhite; position: relative;}
+  form.signup textarea:focus {font-weight: lighter;text-align: center;}
+  form.signup textarea {padding: 5px;width: 101%;font-style: italic;font-weight: lighter;}
+  form.signup #spn { position: absolute; top: 37%; left: 95%; font-weight: bold; z-index: 2;
+   width: 18px; height: 18px; display: inline;}
+  .w3-radio {width: 18px;height: 18px; position: relative; display: inline-block;}
+  form.signup h1{margin: 0px; padding: 15px; display: block; width: 100%;}
+  #outer{background-color: yellow; padding:3px 13px;font: normal bolder 27px algerian; color: red;}
+  u{border-radius: 3px;font: normal bolder 23px arial; color: black; background-color: rgba(200, 120, 0, 1.0); text-decoration: none;}
+  @keyframes anic{
+    from{opacity: 0.2;} to{opacity: 0.8;}
+  }
+  p{color: white;}
+  @media screen and (max-width: 850px) {
+  .top{display: flex; text-align: center;}
+  .top h2{position: absolute; z-index: 5; left: 14% ; display: inline-block;}
+  .top form.login{position: relative; display: block; width: 100%; margin: 0; margin: 5px 0; text-align: center; border-radius: 0; padding: 5px}
+  .top form.login input{display: block; width: 100%; margin: 5px 0;}
+  body, html {margin: 0; padding: 0;  overflow: auto; font-family: Comic sans MS, sans-serif;}
+  form.signup {width: 100%;height: 100%;}
+  form.signup input {border-radius: 4px; }.top{flex-direction: column;}h2{display: inline;}.left{display: none;}.container{flex-direction: column;}
+  }
+  input:focus{font-family: verdana;}
+  #response{animation: res 0.5s ease-in; color: red; background: rgba(0, 200, 0, 0.9); padding: 15px; top: -20px; display: none;text-align: center; width: 58.2%; z-index: 5; position: absolute;}
+  @keyframes res {from{opacity: 0;top: -300px;} to{opacity: 1; top: -20px;}}
+</style>
+</head>
+
+<body>
+<div class="top">
+  <h3 id="response">Hello sorry</h3>
+  <img class="image" src="../images/logo.jpg" alt="LOGO" />
+  <h2 title="This site was developed by VALENTIN" style="padding: 0;"><strong style="padding: 0;">VALENTIN</strong>
+  </h2>
+  <form class="login" method="post" action="login.php" id="login" autocomplete="off">
+    <img src="../images/avatar1.png" alt="avatar" height="50" width="50" style="border-radius: 50%;">
+    <input type="text" name="username" placeholder="~enter username~" required>
+    <input type="password" name="pwd" placeholder="~enter password~" required>
+    <input type="submit" name="login" value="LOGIN" style="background: green; border: 0;" />
+  </form>
+</div>
+  <div class="container">
+    <!--div class="leftMost" style="flex: 10%;"></div-->
+    <div class="left" id="center" style="overflow-y: visible; position: relative;">
+      <img src="../images/1a(10).jpg" alt="At Picnic" class="mySlides"
+        style="width: 100%; height: 100%; margin: 0; padding: 0;" />
+      <img src="../images/1a(11).jpg" alt="Laugh With Friends" class="mySlides"
+        style="width: 100%; height: 100%; margin: 0; padding: 0;" />
+      <img src="../images/1a(12).jpg" alt="Swimming is My Hobby" class="mySlides"
+        style="width: 100%; height: 100%; margin: 0; padding: 0;" />
+      <img src="../images/1a(13).jpg" alt="I like My Job" class="mySlides"
+        style="width: 100%; height: 100%; margin: 0; padding: 0;" />
+      <img src="../images/1a(14).jpg" alt="Lovely Flowers" class="mySlides"
+        style="width: 100%; height: 100%; margin: 0; padding: 0;" />
+      <div class="overlay"
+        style="background-color: rgba(0,0,0,0.7); height: 50%; z-index: 3;text-align: center; padding: 35px; position: absolute; bottom: 0;">
+        <h1 style="padding: 15px; color: ghostwhite; "><strong id="overlayh">Hello There this is a slide show</strong>
+        </h1>
+      </div>
+    </div>
+    <div class="right" style="position: relative;">
+      <form class="signup" action="insert.php" method="post" enctype="multipart/form-data" id="form1">
+        <h1 align="center" style="color: ghostwhite;">CREATE ACCOUNT</h1>
+        <label for="fname">First Name</label>
+        <input id="fname" type="text" placeholder="first name" name="fname" required />
+        <label for="lname">Last Name</label>
+        <input id="lname" type="text" placeholder="last name" name="lname" />
+        <label for="username">Username</label>
+        <input id="username" type="text" onfocus="document.getElementById('checker').style.display='none'"
+          onblur="verifyUser()" id="username" placeholder="username" name="username" required />
+        <!--span id="checker"></span-->
+        <label for="pwd">Password</label>
+        <input id="password" class="pass" type="password" placeholder="password" name="password" required />
+        <input type="checkbox" id="spn" style="color: red" onclick="myFun()" />
+        <label for="dob">Date Of Birth</label>
+        <input id="dob" type="date" placeholder="date of birth" name="dob" />
+        <select id="sex" style="display: inline-block; padding: 5px; width: 100%;" name="sex"></span>
+          <option type="radio" value="male" selected />Male</option>
+          <option type="radio" value="female" />Female</option></select>
+        <label for="image">Photo</label>
+        <input id="image" type="file" name="image" onchange="checkImage()">
+        <label for="address">Address</label>
+        <input id="address" type="text" placeholder="address" name="address" />
+        <label for="about">About me</label>
+        <textarea type="text" placeholder="about yourself" name="about"></textarea>
+        <input id="about" id="submit" type="submit" name="submit" value="SIGN UP" formenctype="multipart/form-data">
+        <p>By signing up you agree to our License <a href="" style="color: dodgerblue;">terms </a>& <a href=""
+            style="color: dodgerblue;">agreements</a><strong>.</strong>
+          <p style="width: 100%; text-align: right;">Have an account <a href="#login"
+              style="color: dodgerblue;">Login</a></p>
+      </form>
+    </div>
+  </div>
+  <div class="footer"
+    style="background-color: lightblue; font-weight: bold; color: darkblue; display: block; text-align: center; padding: 10px;">
+    <p><strong>&copy;Valentin.Inc</strong></p>
+  </div>
+  <script type="text/javascript">
+    //var signupForm = document.getElementById('form1');
+    var slideIndex = 1;
+    showSlides(slideIndex);
+    setInterval(auto, 6000);
+    function auto() {
+      showSlides(slideIndex += 1);
+    }
+    function sld(n) {
+      showSlides(slideIndex += n);
+    }
+    function showSlides(n) {
+      var i, e = document.getElementsByClassName('mySlides');
+      if (slideIndex > e.length) { slideIndex = 1; }
+      if (slideIndex < 1) { slideIndex = e.length; }
+
+      for (i = 0; i < e.length; i++) {
+        e[i].style.display = "none";
+      }
+      e[slideIndex - 1].style.display = "block";
+      var txt = document.getElementById('overlayh');
+      txt.innerHTML = e[slideIndex - 1].alt;
+    }
+    function myFun() {
+      var elem = document.getElementsByClassName("pass")[0];
+      var e = document.getElementById("spn");
+      if (elem.type === "password") {
+        elem.type = "text";
+        e.style.cursor = "pointer";
+      } else {
+        elem.type = "password";
+        e.style.cursor = "pointer";
+      }
+    }
+
+    function checkImage() {
+      var file = document.getElementById('image');
+      var property = file.files[0];
+      var imageName = property.name;
+      var imageExtension = imageName.split(".").pop().toLowerCase();
+      var imageSize = property.size;
+      var allowedFormats = ["jpg", "gif", "png", "jpeg"];
+      var count = 0;
+      for (var i = 0; i < allowedFormats.length; i++) {
+        if (imageExtension.indexOf(allowedFormats[i]) == -1) { count += 1; }
+        if (count == allowedFormats.length) { alert("fileType Not Supported"); file.value = ''; }
+      }
+    }
+    document.getElementById('username').onblur = function () {
+      var xhttp, user;
+      user = document.getElementById('username').value;
+      xhttp = new XMLHttpRequest();
+      xhttp.open('GET', 'check.php?user=' + user, true);
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          if (this.responseText != '') {
+            document.getElementById('response').style.display = 'block';
+            document.getElementById('response').innerHTML = this.responseText;
+            document.getElementById('username').value = '';
+          }
+        }
+      }
+      xhttp.send();
+    }
+    document.getElementById('username').onfocus = function () {
+      document.getElementById('response').style.display = 'none';
+    }
+    window.ondblclick = function () {
+      if (document.getElementById('response').style.display == 'block') {
+        document.getElementById('response').style.display = 'none';
+      }
+    }
+    document.body.onload = function () {
+      var xht = new XMLHttpRequest();
+      xht.open('GET', 'session.php', true);
+      xht.onreadystatechange = function () {
+        if (this.status == 200 && this.readyState == 4) {
+          if (this.responseText == 'set') {
+            location.href = 'home.php';
+          }
+        }
+      }
+      xht.send();
+
+    }
+  </script>
+</body>
+
+</html>

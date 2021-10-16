@@ -1,60 +1,31 @@
-<?php 
-SESSION_START();
-include('header.php');
-$loginError = '';
-if (!empty($_POST['username']) && !empty($_POST['pwd'])) {
-	include ('Chat.php');
-	$chat = new Chat();
-	$user = $chat->loginUsers($_POST['username'], $_POST['pwd']);	
-	if(!empty($user)) {
-		$_SESSION['username'] = $user[0]['username'];
-		$_SESSION['userid'] = $user[0]['userid'];
-		$chat->updateUserOnline($user[0]['userid'], 1);
-		$lastInsertId = $chat->insertUserLoginDetails($user[0]['userid']);
-		$_SESSION['login_details_id'] = $lastInsertId;
-		header("Location:index.php");
-	} else {
-		$loginError = "Invalid username or password!";
-	}
-}
+<?php session_start();
+  require "classes/user.php";
+  require "classes/db.php"; 
 
+  $db = new Con();
+  $conn = $db->create_connection();
+
+  if (isset($_POST['login'])) {
+	  $username = filter_data($_POST["username"]);
+	  $password = filter_data($_POST["password"]);
+
+    $user_obj = new User($conn, $username);
+	  $log_user = $user_obj->login_user($username, $password);
+
+    if (isset($log_user["Error"])) {
+      header("location: index.php?Error=".$log_user["Error"]);
+    }
+    if (isset($log_user["Success"])) {
+      if ($log_user["Success"]) {
+        header("location: friends/profile.php");
+      }
+    }
+  }
+  
+  function filter_data($data){
+  	htmlspecialchars($data);
+  	trim($data);
+  	stripcslashes($data);
+  	return $data;
+  }
 ?>
-<title></title>
-<?php// include('container.php');?>
-<div class="container">		
-	<h2></h1>		
-	<div class="row">
-		<div class="col-sm-4">
-			<h4>Chat Login:</h4>		
-			<form method="post">
-				<div class="form-group">
-				<?php if ($loginError ) { ?>
-					<div class="alert alert-warning"><?php echo $loginError; ?></div>
-				<?php } ?>
-				</div>
-				<div class="form-group">
-					<label for="username">User:</label>
-					<input type="username" class="form-control" name="username" required>
-				</div>
-				<div class="form-group">
-					<label for="pwd">Password:</label>
-					<input type="password" class="form-control" name="pwd" required>
-				</div>  
-				<button type="submit" name="login" class="btn btn-info">Login</button>
-			</form>
-			<br>
-			<p><b>User</b> : adam<br><b>Password</b> : 123</p>
-			<p><b>User</b> : rose<br><b>Password</b> : 123</p>
-			<p><b>User</b> : smith<br><b>Password</b>: 123</p>
-			<p><b>User</b> : merry<br><b>Password</b>: 123</p>
-		</div>
-		
-	</div>
-</div>	
-<?php include('footer.php');?>
-
-
-
-
-
-

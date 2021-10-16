@@ -1,0 +1,293 @@
+@import url('./story_create.css');
+
+.storyContainer {
+    display: flex;
+    /* gap: 1rem; */
+}
+
+.sideBar {
+    background-color: var(--secondary-bg);
+    padding: 1rem;
+    height: calc(100vh - 65px);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.storyList {
+    display: flex;
+    flex-direction: column;
+}
+
+.storyList .storyItem {
+    display: flex!important;
+    gap: .5rem;
+    background: var(--main-bg);
+    border-radius: 1rem;
+    padding: .5rem;
+    padding-right: 1rem;
+    margin: 0.25rem 0;
+    max-width: 300px;
+    cursor: pointer;
+    transition: .3s;
+    /* flex-direction: ; */
+}
+
+.storyItem:hover {
+    background-color: var(--accent-color);
+}
+
+.storyImg {
+    height: 56px;
+    width: 56px;
+    overflow: hidden;
+    border-radius: inherit;
+    border: 3px dashed var(--accent-bg);
+    align-self: flex-start;
+    /* flex: 1; */
+}
+
+.storyCount{
+    color: var(--accent-bg)!important;
+    font-size: small;
+    font-style: italic;
+    padding-left: .15rem;
+}
+
+.storyItemBtn {
+    display: none;
+}
+
+.storyImg img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    object-position: top;
+}
+
+.storyDetails {
+    /* flex: 2.5; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.storyName {
+    /* padding-top: 0.25rem; */
+    display: inline-block;
+    color: var(--white);
+}
+
+.storyData {
+    font-size: smaller;
+    font-style: italic;
+    display: inline-block;
+    justify-self: end;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    position: relative;
+    height: calc(100vh - 65px);
+    width: 100%;
+    padding: 1rem;
+    flex: 2.7;
+    /* background: #000; */
+    overflow: hidden;
+}
+
+.centerText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+
+.centerText .header {
+    /* color: var(--accent-color); */
+    margin-bottom: 0rem;
+}
+
+.centerText p {
+    margin-top: 0.15rem;
+    font-size: small;
+}
+
+/* mystory */
+
+.mystory {
+
+}
+
+.storyCreate {
+    display: flex;
+    align-items: center;
+}
+
+.storyCreateBtn {
+    /* border-radius: 99px; */
+}
+
+.createText {
+    padding-left: .5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* background: #000; */
+}
+
+
+.createText .createStoryHeader {
+    margin: 0;
+    margin-bottom: 0.15rem;
+}
+
+/* user story */
+.storyPreviewContainer {
+    max-width: 350px;
+    position: relative;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.storyPreview {
+    background: var(--secondary-bg);
+    height: 100%;
+    border-radius: .5rem;
+    overflow: hidden;
+    flex: 1;
+    position: relative;
+}
+
+.storyPreviewImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.storyPreview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.363);
+}
+
+.storyPreviewNextButton {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    --translateX: -50%;
+    --translateY: -50%;
+    box-shadow: 0 0 2px 2px var(--white);
+}
+
+
+.storyPreviewReply {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+.storyPreviewReplyInput {
+    flex: 1;
+    border: 2px solid var(--white);
+    /* background-color: #000; */
+    background: var(--secondary-bg);
+    outline: none;
+    padding: 0.5rem 1rem;
+    border-radius: 99px;
+    width: 100%;
+    margin-right: .5rem;
+    color: white;
+    font-size: medium;
+}
+
+.storyPreviewControls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.705), transparent);
+    padding: 0.5rem;
+}
+
+.storyPreviewUser {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.storyPreviewUserInfo {
+    padding-left: 0.5rem;
+}
+
+.storyPreviewUserName {
+    color: white;
+}
+
+.storyPreviewTime {
+    color: white;
+    font-size: smaller;
+}
+
+.storyPreviewUserImg {
+    border: 2px solid var(--white);
+    overflow: hidden;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+}
+.storyPreviewUserImg img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    /* height: 30px; */
+    object-fit: cover;
+    object-position: top;
+}
+
+.storyPreviewProgressContainer {
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.363);
+    border-radius: 99px;
+    margin: 0.16rem 0;
+    margin-bottom: .75rem;
+    backdrop-filter: blur(10px);
+}
+
+.storyPreviewProgress {
+    height: inherit;
+    width: 80%;
+    background: #fff;
+    border-radius: inherit;
+}
+
+
+.storyDesc {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: xx-large;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: 2px;
+    font-family: cursive;
+    text-shadow: 2px 2px 5px var(--accent-color);
+    background-color: rgba(0, 0, 0, 0.363);
+    border-radius: .5rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.storyDesc.centered {
+    top: 50%;
+    bottom: auto;
+    transform: translate(-50%,-50%);
+}

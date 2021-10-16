@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | Test again</title>
+    <link rel="stylesheet" href="../css/w3.css">
+    <link rel="stylesheet" href="../css/lib/w3-theme-dark-grey.css">
+    <style>
+        body {
+            background-color: rgba(30, 30, 30, .9);
+            word-wrap: break-word;
+        }
+        /* Recent Messages */
+        
+        .recent-messages-wrapper {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1.5px solid gray;
+            margin: 3px 0;
+            padding: 4px;
+        }
+        
+        .recent-user-wrapper {
+            width: 100%;
+            display: flex;
+            margin: 4px 1.2px;
+            padding: 5px;
+        }
+        
+        .recent-user-name {
+            text-transform: capitalize;
+        }
+        
+        .recent-user-data-wrapper {
+            display: flex;
+            cursor: pointer;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .recent-user-data-grouping {
+            display: flex;
+        }
+        
+        .recent-user-additional-data {
+            padding: 0 4px;
+        }
+        
+        .recent-user-time-wrapper {
+            position: relative;
+        }
+        
+        .recent-user-image-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .recent-user-image-wrapper img {
+            width: 34px;
+            padding: 2px;
+            border: 1px solid teal;
+            height: 34px;
+            object-fit: cover;
+            object-position: top;
+        }
+        /* my massages wrapper style (chatBox) */
+        
+        .messages-wrapper {
+            padding-top: 10px !important;
+            height: 350px;
+            margin: 3px 0;
+            display: none;
+            border-radius: 4px;
+            scroll-behavior: smooth;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        .user-messages-wrapper,
+        .my-messages-wrapper {
+            display: flex;
+            align-items: flex-end;
+            width: 100%;
+            padding: 0;
+            justify-content: flex-start;
+        }
+        
+        .my-messages-wrapper {
+            justify-content: flex-end;
+        }
+        
+        .my-message-date-wrapper {
+            display: flex;
+            margin: 2px 23px;
+            justify-content: flex-end;
+        }
+        
+        .user-message-date-wrapper {
+            display: flex;
+            margin: 2px 23px;
+            justify-content: flex-start;
+        }
+        
+        .user-image-wrapper,
+        .my-image-wrapper {
+            width: 20px;
+            border: 1.2px solid #febaba;
+            margin: 2px;
+            height: 20px;
+            object-fit: cover;
+            object-position: top;
+        }
+        
+        .my-image-wrapper {
+            margin-right: 1px !important;
+        }
+        
+        .user-message-body-wrapper,
+        .my-message-body-wrapper {
+            max-width: 70%;
+            word-wrap: break-word;
+            border-radius: 20px;
+            margin-bottom: 3px;
+            padding: 6px 8px!important;
+        }
+        
+        .my-bottom-message-margin {
+            border-radius: 20px 2px 20px 20px !important;
+            margin-bottom: 3px;
+        }
+        
+        .user-bottom-message-margin {
+            border-radius: 2px 20px 20px 20px !important;
+            margin-bottom: 3px!important;
+            margin-left: -1px;
+        }
+        
+        .my-top-message-margin {
+            margin-right: 23px;
+            margin-bottom: 3px;
+            border-radius: 20px 20px 2px 23px !important;
+        }
+        
+        .user-top-message-margin {
+            margin-left: 23px;
+            margin-bottom: 3px;
+            border-radius: 20px 20px 20px 2px !important;
+        }
+        
+        .my-middle-message-margin {
+            margin-right: 23px;
+            border-radius: 20px 2px 2px 20px !important;
+            margin-bottom: 3px;
+        }
+        
+        .user-middle-message-margin {
+            margin-left: 23px;
+            border-radius: 2px 20px 20px 2px !important;
+            margin-bottom: 3px;
+        }
+        
+        .user-message-margin {
+            margin-left: 23px;
+        }
+        
+        .message-sender-wrapper form {
+            width: 100%;
+            display: none;
+            position: static;
+            bottom: 0;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        
+        .message-sender-wrapper textarea {
+            width: 100%;
+            resize: auto;
+            border-radius: 4px;
+            font-size: 13px;
+            padding: 4px;
+            border: 1px solid gray;
+        }
+        
+        .message-sender-wrapper #send_message {
+            height: auto;
+            cursor: pointer;
+            color: dodgerblue !important;
+            padding: 4px 3px;
+            border: 1px solid gray;
+            border-radius: 2px;
+            margin-left: .3px;
+        }
+        
+        .message-badge {
+            position: absolute;
+            border-radius: 50%;
+            height: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 11px;
+            color: wheat;
+            border: 3px solid white;
+            padding: 7px;
+            margin: 0;
+            top: 0;
+            left: 90%;
+            width: 15px;
+            background-color: red;
+        }
+        /* new recent style */
+        
+        .recent-messages {
+            display: block;
+            width: 100%;
+            margin: 0;
+            padding: 3.5px;
+        }
+        
+        .recent-user {
+            position: relative;
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .recent-user-image {
+            padding: 2px;
+        }
+        
+        .recent-user-image img {
+            width: 35px;
+            height: 35px;
+            padding: 1.4px;
+            object-fit: cover;
+            object-position: top;
+            -o-object-fit: cover;
+            -o-object-position: top;
+        }
+        
+        .w3-small {
+            font-size: 11px!important;
+        }
+        
+        .recent-user-data {
+            padding: 0 3px;
+            display: block;
+            width: 100%;
+        }
+        
+        .recent-sample {
+            display: flex;
+            padding: 0;
+            margin: 0;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="recent-messages w3-theme-d1 w3-round">
+    </div>
+
+    <div class="container" style="max-width: 400px; margin: auto;">
+        <div class="messages-wrapper w3-theme-l1 w3-border" id="chatBox">
+            <h4 style="text-align: center; width: 70%; margin: auto;">Select friend & start chat time<br />👨‍👩‍👧‍👧👩‍❤️‍👩😜👨‍❤️‍👨👨‍💏😝👨‍👨‍👧‍👧</h4>
+        </div>
+        <input type="hidden" value="valentin" id="me" />
+    </div>
+
+
+    <script>
+        recentMessages();
+
+        async function recentMessages() {
+            const recentWrapper = document.querySelectorAll(".recent-messages")[0]
+            const me = document.getElementById("me").value
+            recentWrapper.innerHTML = ''
+            const result = await loadRecent()
+            var senders = []
+
+            if (typeof result !== "object") {
+                var h4 = document.createElement("H4")
+                h4.setAttribute("class", "w3-padding w3-round w3-red w3-center")
+                h4.textContent = result
+                output += h4
+                return 0
+            }
+
+            for (let i = 0; i < result.length; i++) {
+                const obj = {
+                    method: 'POST',
+                    url: 'index.php',
+                    params: `getMessages&reciever=${result[i]}`
+                }
+                const resp = await makeRequest(obj);
+                senders.push(resp[resp.length - 1])
+            }
+
+            for (const i in senders) {
+                var rctUser, rctImg, rctImgImg, _class, unread, data, rctData, rctName, rctSample, rctSampleVal, rctDate, sfx = ''
+                var user = {}
+
+                elmnt = document.createElement("SPAN")
+                rctUser = document.createElement("DIV")
+                rctImg = document.createElement("DIV")
+                rctImgImg = document.createElement("IMG")
+                rctData = document.createElement("DIV")
+                rctName = document.createElement("SPAN")
+                rctSample = document.createElement("DIV")
+                rctSampleVal = document.createElement("SPAN")
+                rctDate = document.createElement("SPAN")
+
+                rctUser.append(rctImg, rctData)
+                rctImg.appendChild(rctImgImg)
+                rctData.append(rctName, rctSample)
+                rctSample.append(rctSampleVal, rctDate)
+
+                rctUser.className = "recent-user w3-border w3-border-theme w3-theme-l3 w3-round"
+                rctImg.className = "recent-user-image"
+                rctImgImg.className = "w3-border-theme w3-border w3-circle w3-theme-action"
+                rctData.className = "recent-user-data"
+                rctName.className = "w3-medium"
+                rctSample.className = "recent-sample"
+                rctSampleVal.className = "w3-small"
+                rctDate.className = "w3-text-theme w3-small"
+                elmnt.className = "message-badge"
+                bl = (senders[i].sender === me) ? true : false
+
+                if (bl) {
+                    data = await makeRequest({
+                        method: 'POST',
+                        url: 'index.php',
+                        params: `getUserData&user=${senders[i].reciever}`
+                    })
+                    sfx = 'You:'
+                    user.profile_pic = data.profile_pic
+                    user.name = data.username
+                } else {
+                    user.profile_pic = senders[i].profile_pic
+                    user.name = senders[i].sender
+                }
+
+                unread = await makeRequest({
+                    method: 'POST',
+                    url: 'index.php',
+                    params: `getUnread&user=${user.name}`
+                })
+                console.log(unread + ' => ' + user.name);
+                (unread <= 0) ? elmnt.style.display = "none": null
+                elmnt.textContent = unread
+
+                rctData.appendChild(elmnt)
+
+                rctUser.id = user.name
+                rctUser.addEventListener("click", function() {
+                    recentActions({
+                        id: this.id
+                    })
+                })
+                rctImgImg.src = `../images/${user.profile_pic}`
+                rctImgImg.alt = user.name
+                rctName.textContent = user.name
+                rctDate.textContent = cvtDate(senders[i].date_)
+                rctSampleVal.textContent = `${sfx} ${sliceLong(senders[i].body)}`
+
+                recentWrapper.append(rctUser)
+            }
+        }
+
+        async function loadRecent() {
+            return new Promise(async function(resolve, reject) {
+                const me = document.getElementById("me").value
+                const people = []
+                const newObj = {
+                    method: 'POST',
+                    url: 'index.php',
+                    params: 'getAllMessages'
+                }
+                const responses = await makeRequest(newObj)
+                if (responses.infor) {
+                    console.log(responses.infor);
+                    resolve(responses.infor)
+                } else {
+                    responses.forEach(async function(response) {
+                        const user = (response.sender === me) ? response.reciever : response.sender
+                        if (!people.includes(user)) {
+                            people.push(user)
+                        }
+                    })
+                    resolve(people)
+                }
+            })
+        }
+
+        function sliceLong(str) {
+            if (str.length > 14) {
+                newStr = str.slice(0, 14);
+                return newStr + '...';
+            } else {
+                return str;
+            }
+        }
+
+        function sliceStr(str) {
+            if (str.length > 6) {
+                newStr = str.slice(0, 5);
+                return newStr + `<span class="w3-small">...</span> `;
+            } else {
+                return str;
+            }
+        }
+
+        function cvtDate(date) {
+            const inputDate = Date.parse(date)
+            const dateNow = Date.now()
+            const diff = Math.abs((dateNow - inputDate) / 1000)
+            const days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+            const months = ["Jan", "Feb", "Mar", "Aprl", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
+            const today = new Date(dateNow)
+            const myDate = new Date(inputDate)
+            const hours = myDate.getHours() < 10 ? `0${myDate.getHours()}` : myDate.getHours()
+            const minutes = myDate.getMinutes() < 10 ? `0${myDate.getMinutes()}` : myDate.getMinutes()
+
+            if (today.getFullYear() !== myDate.getFullYear()) {
+                const monthName = months[myDate.getMonth()]
+                return `${monthName} ${myDate.getDate()}, ${myDate.getFullYear()}`
+            }
+            if (diff < 60) {
+                return `Just now`
+            } else if (diff >= 60 && diff < 3600) {
+                const result = Math.round(diff / 60)
+                return result > 1 ? `${result} mins` : `1 min`
+            } else if (diff >= 3600 && diff < 86400) {
+                if (today.getDay() === myDate.getDay()) {
+                    return `${hours}:${minutes}`
+                } else {
+                    return `Yesterday at ${hours}:${minutes}`
+                }
+            } else if (diff >= 86400 && diff < 86400 * 7) {
+                const result = ``;
+                const dayName = days[myDate.getDay()]
+                const yester = days[today.getDay() - 1]
+
+                if (dayName === yester) {
+                    return `Yesterday at ${hours}:${minutes}`
+                } else {
+                    return `${dayName} at ${hours}:${minutes}`
+                }
+            } else {
+                const monthName = months[myDate.getMonth()]
+                return `${monthName} ${myDate.getDate()} at ${hours}:${minutes}`
+            }
+        }
+
+        function sliceLong(str) {
+            if (str.length > 14) {
+                newStr = str.slice(0, 14);
+                return newStr + '...';
+            } else {
+                return str;
+            }
+        }
+
+
+        function noMin(date1, date2) {
+            var d1 = Date.parse(date1)
+            var d2 = Date.parse(date2)
+            var diff = Math.abs((d1 - d2) / 1000)
+
+            if (diff <= 60) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        // make any json post request
+        function makeRequest({
+            method,
+            url,
+            params = ''
+        }) {
+            return new Promise((resolve, reject) => {
+                var xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+                xhr.open(method, url, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        resolve(JSON.parse(this.responseText));
+                    }
+                }
+                xhr.send(params);
+            })
+        }
+    </script>
+</body>
+
+</html>
