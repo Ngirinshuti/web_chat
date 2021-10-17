@@ -7,7 +7,7 @@ class User
     function __construct($conn, $me)
     {
         $this->db = $conn;
-        $this->me = $me;
+        $this->me = $me;    
     }
 
     function get_users($expression)

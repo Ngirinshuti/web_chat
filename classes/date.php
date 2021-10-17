@@ -20,17 +20,17 @@
 			$diff = $this->now - strtotime($date);
 			if ($diff < 60) {
 				if ($diff >= 0) {
-					return "Right now"; //($diff == 1 || $diff == 0)? "1 sec ago" : $diff . " secs ago";
+					return "now"; //($diff == 1 || $diff == 0)? "1 sec" : $diff . "s";
 				}else{
 					if ($diff > -60) {
-						return " next " . $diff . " Secs";
+						return " next " . $diff . "s";
 					}
 					elseif ($diff <= -60 && $diff > -3600) {
-						return " next " . round($diff/-60) . " mins";
+						return " next " . round($diff/-60) . "m";
 					}
 					elseif ($diff <= -3600 && $diff > -86400) {
 						// $hours = date_format(date_create($date), "H:i");
-						return " next " . round($diff/-3600) . " hrs";
+						return " next " . round($diff/-3600) . "hr";
 					}
 					elseif ($diff <= -86400 && $diff > (-86400 * 7)) {
 						if (round($diff/-86400) == 1) {
@@ -51,11 +51,11 @@
 				}
 			}
 			elseif ($diff >= 60 && $diff < 3600) {
-				return round($diff/60) . " min ago";
+				return round($diff/60) . "m";
 			}
 			elseif ($diff >= 3600 && $diff < 86400) {
 				// $hours = date_format(date_create($date), "H:i");
-				return (round($diff/3600) > 1 )? round($diff/3600) . " hrs ago" : "1 hour ago";
+				return (round($diff/3600) > 1 )? round($diff/3600) . "h" : "1h";
 			}
 			elseif ($diff >= 86400 && $diff < (86400 * 7)) {
 				if (round($diff/86400) == 1) {

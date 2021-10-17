@@ -24,19 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $story = Story::create($me->username, $image_name, $description);
             $msg = "Story created successfully!";
             $is_valid = true;
+            header("location: ./index.php?story={$story->id}");
 
         } else {
             var_dump($_POST, $_FILES['image']);
             $msg = "Something went wrong!";
         }
-
-
-
     }
 
 }
-
-
 
 ?>
 

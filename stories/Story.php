@@ -9,8 +9,10 @@
  * @license  MIT url
  * @link     https://meet_up.com
  */
-
-require "./DB.php";
+if (!class_exists('Message')) {
+    include "./../classes/message.php";
+}
+require __DIR__ ."/DB.php";
 
 /**
  * Help interacting with stories
@@ -132,10 +134,10 @@ class Story
 
         $query = <<<QUERY
             SELECT *, COUNT(`stories`.`id`) as story_count
-             FROM `stories` WHERE EXISTS (SELECT * FROM `friends` WHERE ($we_are_friends))
+             FROM `stories` WHERE EXISTS
+             (SELECT * FROM `friends` WHERE ($we_are_friends))
              GROUP BY `stories`.`username`
-             ORDER BY `stories`.`created_at` ASC
-
+             ORDER BY `stories`.`created_at` DESC
         QUERY;
 
         $stmt = DB::conn()->prepare($query);
@@ -148,9 +150,10 @@ class Story
 
 
     /**
-     * Get view story
+     * View story
      *
      * @param string $username story viewer
+     * @param int    $story_id story id
      *
      * @return bool
      */
@@ -167,7 +170,6 @@ class Story
                 "UPDATE `stories` SET views += 1 WHERE `story_id`= ?"
             );
             $stmt2->execute([$story_id]);
-
         } catch (PDOException $e) {
         }
 
@@ -197,10 +199,28 @@ class Story
      */
     public static function findByUser(string $username)
     {
-        $stmt = DB::conn()->prepare("SELECT * from `stories` WHERE `username`=? ORDER BY created_at DESC LIMIT 1");
-        $stmt->execute([$username]);
+        $stmt = DB::conn()->prepare("SELECT *, (SELECT COUNT(`stories`.`id`) FROM `stories` WHERE `username` = ? ) as story_count FROM `stories`  WHERE `username`=? ORDER BY created_at ASC LIMIT 1");
+        $stmt->execute([$username, $username]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
 
         return $stmt->fetch();
+    }
+
+    /**
+     * Reply to user story
+     *
+     * @param string $username Sender username (usually current user)
+     * @param string $message  Reply mesage
+     *
+     * @return mixed
+     */
+    public function reply(string $username, string $message)
+    {
+
+        $sent = (new Message(DB::conn(), $username))->send_message(
+            $this->username, $message, $this->id
+        );
+
+        return $sent === true;
     }
 }
