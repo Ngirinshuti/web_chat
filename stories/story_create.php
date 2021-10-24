@@ -1,4 +1,5 @@
 <?php
+
 require '../classes/init.php';
 
 $msg = "";
@@ -6,32 +7,69 @@ $is_valid = false;
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     include "./Story.php";
-
     $description = $_POST['description'];
-    $image_file_name = $_FILES['image']['name'];
-    $file_destination = "./story_uploads/".$image_file_name;
 
-    if (empty($description) && empty($image_file_name)) {
-        $msg = "You have to upoad an image or write some text";
+    $has_no_video = empty($_FILES['video']['name']);
+    $has_no_audio = empty($_FILES['audio']['name']);
+    $has_no_media = $has_no_audio && $has_no_video;
+    $has_no_image = empty($_FILES['image']['name']);
+    $has_no_file = $has_no_image && $has_no_media;
+    $has_image_and_video = (!$has_no_image && !$has_no_video);
+    $has_audio_and_video = !$has_no_audio && !$has_no_video;
+    $has_no_desc = empty($description);
+    $has_no_content = ($has_no_file && $has_no_desc);
+
+    if ($has_no_content) {
+        $msg = "You have to upoad an image, video, audio or write some text";
+    } elseif ($has_image_and_video) {
+        $msg = "You can't upload an image and video for the same story.";
+    } elseif ($has_audio_and_video) {
+        $msg = "You can't upload both audio and video, just choose one";
     } else {
+        $image = uploadFile('image', './story_uploads');
+        $media = uploadFile('video', './story_uploads') ?: uploadFile('audio', './story_uploads');
 
-        $uploaded = !empty($image_file_name) && move_uploaded_file(
-            $_FILES['image']['tmp_name'], $file_destination
+        $story = Story::create(
+            username: $me->username,
+            image: $image,
+            description: $description,
+            media: $media
         );
 
-        if (!empty($description) || $uploaded) {
-            $image_name = basename(!$uploaded  ? "" : $file_destination);
-            $story = Story::create($me->username, $image_name, $description);
-            $msg = "Story created successfully!";
-            $is_valid = true;
-            header("location: ./index.php?story={$story->id}");
-
-        } else {
-            var_dump($_POST, $_FILES['image']);
-            $msg = "Something went wrong!";
-        }
+        $msg = "Story created successfully!";
+        $is_valid = true;
+        header("location: ./index.php?story={$story->id}");
+        var_dump($_POST, $_FILES['image']);
+        $msg = "Something went wrong!";
     }
+}
 
+
+/**
+ * File upload function
+ *
+ * @param string  $field_name  name of form field containing the file
+ * @param string  $destination file upload folder
+ * @param boolean $uploaded    reference variable true if file was uploaded
+ *
+ * @return string uploaded file name
+ */
+function uploadFile(
+    string $field_name,
+    $destination = "./uploads",
+    &$uploaded = false
+): string {
+    $random_number = strval(rand(100000, 9999999));
+    $file_name = $random_number;
+    $file_destination = $destination . "/$file_name";
+
+    $uploaded = move_uploaded_file(
+        $_FILES[$field_name]['tmp_name'],
+        $file_destination
+    );
+
+    $file_name = basename(!$uploaded  ? "" : $file_destination);
+    return $file_name;
 }
 
 ?>
@@ -59,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <li><a href="../friends/friends.php">Friends</a></li>
         </ul>
         <div class="account">
-            <img src="../images/<?php  echo $me->profile_pic; ?>" alt="Image" class="accountImg">
+            <img src="../images/<?php echo $me->profile_pic; ?>" alt="Image" class="accountImg">
         </div>
 
     </nav>
@@ -67,13 +105,17 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     <div class="storyCreateContainer">
         <div class="formContainer">
             <h1 class="header">Create story</h1>
-            <?php echo !empty($msg) ? "<p class='". (!$is_valid ? 'errorMsg' : 'successMsg') ."'>$msg</p>" : "" ?>
+            <?php echo !empty($msg) ? "<p class='" . (!$is_valid ? 'errorMsg' : 'successMsg') . "'>$msg</p>" : "" ?>
             <p class="formText">Start sharing your moments and memories</p>
             <form action="story_create.php" method="post" enctype="multipart/form-data">
                 <label for="desc">Write Your story</label>
                 <textarea class="storyCreateArea" id="desc" name="description" placeholder="Write you story here"></textarea>
                 <label for="img">Image</label>
-                <input type="file" name="image" id="img" />
+                <input accept="image/*" type="file" name="image" id="img" />
+                <label for="video">Video</label>
+                <input accept="video/mp4,video/webm" type="file" name="video" id="video" />
+                <label for="audio">Audio</label>
+                <input accept="audio/*" type="file" name="audio" id="audio" />
                 <button type="submit">Create story</button>
             </form>
         </div>
@@ -85,5 +127,3 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 
 <?php
-
-

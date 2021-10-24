@@ -19,10 +19,14 @@ $prev_story = null;
 
 // get current story and get prev and next user story if available
 if (isset($_GET['story'])) {
+    Story::viewStory($me->username, (int)$_GET['story']);
     $main_story = Story::findOne((int)$_GET['story']);
 
     if (!$main_story) {
-        exit("Sorry, something went wrong! Try again.");
+        $url = explode('?', $_SERVER['REQUEST_URI'])[0];
+        $msg = ("Story was not found! It might be expired.");
+        header("location: ../404.php?url=$url&msg=$msg");
+        exit;
     }
 
     $user_stories = Story::getUserStories($main_story->username);
@@ -38,7 +42,6 @@ if (isset($_GET['story'])) {
             $prev_story = $user_story;
         }
     }
-    Story::viewStory($me->username, (int)$_GET['story']);
 }
 
 // make stories jump to next user
@@ -81,14 +84,14 @@ $main_story_data = $main_story ? json_encode($main_story) : "";
 /**
  * Check if story is being played
  *
- * @param Story $str story object
+ * @param Story $story story object
  *
  * @return boolean
  */
-function isActive(Story $str)
+function fromActiveUser(Story $story)
 {
     $main_story = $GLOBALS['main_story'];
-    return $str->username === $main_story?->username;
+    return $story->username === $main_story?->username;
 }
 
 ?>
@@ -126,7 +129,7 @@ function isActive(Story $str)
                 <h4 class="myStoryHeader">My story</h4>
                 <?php if ($my_story) : ?>
                     <div class="storyList">
-                        <div class="storyItem <?php echo isActive($my_story) ? "active" : ""; ?>">
+                        <div class="storyItem <?php echo fromActiveUser($my_story) ? "active" : ""; ?>">
                             <div class="storyImg">
                                 <img src="../images/<?php echo urlencode($me->profile_pic); ?>" alt="User Pic" />
                             </div>
@@ -154,12 +157,12 @@ function isActive(Story $str)
             <div class="friendStories">
                 <h3 class="storiesHeader">Friends Stories</h3>
                 <div class="storyList">
-                    <?php echo empty($stories) ? "<h5>No stories yet.</h5>" : ""; ?>
+                    <?php echo empty($stories) ? "<h5>No active stories.</h5>" : ""; ?>
                     <?php foreach ($stories as $story) : ?>
                         <?php
                         $user  = ($user_obj->get_user_data($story->username));
                         ?>
-                        <div class="storyItem <?php echo isActive($story) ? "active" : ""; ?>">
+                        <div class="storyItem <?php echo fromActiveUser($story) ? "active" : ""; ?>">
                             <div class="storyImg">
                                 <img src="../images/<?php echo urlencode($user->profile_pic); ?>" alt="User Pic" />
                             </div>
@@ -168,7 +171,7 @@ function isActive(Story $str)
                             </a>
                             <div class="storyDetails">
                                 <div class="storyData">
-                                    <?php echo $my_story->story_count ? "</span><span class='storyCount'>{$my_story->story_count} stories</span>" : ""; ?>
+                                    <?php echo $story->story_count ? "</span><span class='storyCount'>{$story->story_count} stories</span>" : ""; ?>
                                     <!-- <span class="dot"></span> -->
                                     <span class="storyTime"><?php echo $date_obj->dateDiffStr($story->created_at); ?></span>
                                 </div>
@@ -181,30 +184,58 @@ function isActive(Story $str)
         </div>
         <div class="main">
             <?php if ($main_story) : ?>
+                <?php $user = $user_obj->get_user_data($main_story->username); ?>
                 <div class="storyPreviewContainer">
 
-                    <div class="storyPreview">
+                    <div data-main-story="<?php echo $main_story_data; ?>" class="storyPreview">
                         <?php if ($main_story->image) : ?>
-                            <?php $user = $user_obj->get_user_data($main_story->username); ?>
                             <img src="./story_uploads/<?php echo $main_story->image; ?>" alt="story Image" class="storyPreviewImg">
                         <?php endif; ?>
+                        <?php if ($main_story->has_media) : ?>
+                            <video src="./story_uploads/<?php echo $main_story->media; ?>" autoplay="true" class="storyPreviewVideo"></video>
+                        <?php endif; ?>
                         <?php if ($main_story->description) : ?>
-                            <div class="<?php echo !$main_story->image ? 'centered' : ""; ?> storyDesc"><?php echo $main_story->description; ?></div>
+                            <div class="<?php echo (!$main_story->image && !$main_story->has_media) ? 'centered' : ""; ?> storyDesc"><?php echo $main_story->description; ?></div>
                         <?php endif; ?>
                         <div class="storyPreviewControls">
-                            <div class="storyPreviewProgressContainer">
-                                <div class="storyPreviewProgress"></div>
+                            <div class="storyPreviewProgressBars">
+                                <?php foreach ($user_stories as $i => $user_story) : ?>
+                                    <?php
+                                    $active = $user_story->id === $main_story->id ? "active" : "";
+                                    $viewed = $user_story->viewedBy($me->username) ? "viewed" : "";
+                                    $done = $user_story->id < $main_story->id ? "done" : "";
+                                    ?>
+                                    <!-- <a href="./index.php?story={$user_story->id}"> -->
+                                    <a href="./index.php?story=<?php echo $user_story->id; ?>" style="width: <?php echo (100 / count($user_stories)); ?>%" class="<?php echo " $active $done $viewed"; ?> storyPreviewProgressContainer">
+                                        <div class="storyPreviewProgress"></div>
+                                    </a>
+                                    <!-- </a> -->
+                                <?php endforeach; ?>
                             </div>
+
                             <div class="storyPreviewUser">
                                 <div class="storyPreviewUserImg">
                                     <img src="../images/<?php echo $user->profile_pic; ?>" alt="user image">
                                 </div>
                                 <div class="storyPreviewUserInfo">
                                     <a href="#" class="storyPreviewUserName"><?php echo $main_story->username; ?></a>
-                                    <!-- <span class="dot"></span> -->
                                     <span class="storyPreviewTime"><?php echo $date_obj->dateDiffStr($main_story->created_at); ?></span>
+                                    <span class="storyPreviewViews"><?php echo $main_story->views; ?> view(s)</span>
                                 </div>
                             </div>
+                            <?php if ($main_story->has_media) : ?>
+                                <div class="storyPreviewMediaControls">
+                                    <span data-play-icon class="storyPreviewMediaControlIcon">
+                                        <img src="../images/play.png" alt="play icon">
+                                    </span>
+                                    <span data-pause-icon class="hide storyPreviewMediaControlIcon">
+                                        <img src="../images/pause.png" alt="pause icon">
+                                    </span>
+                                    <span data-volume-icon class="storyPreviewMediaControlIcon">
+                                        <img src="../images/volume_off.png" alt="volume icon">
+                                    </span>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <?php if ($prev_story) : ?>
@@ -230,21 +261,6 @@ function isActive(Story $str)
             <?php endif; ?>
         </div>
     </div>
-    <script defer>
-        let story;
-        document.addEventListener('DOMContentLoaded', e => {
-            const links = document.querySelectorAll('.storyLink');
-            links.forEach(link => {
-                link.closest('.storyItem').addEventListener('click', e => {
-                    link.click()
-                })
-            })
-        });
-
-        (function($data) {
-            story = $data;
-        })(<?php echo $main_story_data; ?>);
-    </script>
     <script src="./js/story.js" defer></script>
 </body>
 

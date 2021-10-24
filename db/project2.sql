@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2021 at 09:34 PM
+-- Generation Time: Oct 16, 2021 at 08:34 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -50,9 +50,7 @@ CREATE TABLE `friendrequest` (
 --
 
 INSERT INTO `friendrequest` (`sender`, `reciever`, `date`) VALUES
-('emmerance', 'mike', '2021-10-17 11:41:11'),
-('enzo', 'mike', '2021-10-17 10:42:53'),
-('valentin', 'mike', '2021-10-17 10:42:16');
+('valentin', 'prudent', '2021-10-16 16:02:34');
 
 -- --------------------------------------------------------
 
@@ -70,15 +68,14 @@ CREATE TABLE `friends` (
 --
 
 INSERT INTO `friends` (`friend`, `partener`) VALUES
-('emmerance', 'coder'),
-('emmerance', 'james'),
-('enzo', 'coder'),
-('enzo', 'emmerance'),
-('enzo', 'james'),
-('valentin', 'coder'),
+('emmerance', 'brad'),
+('emmerance', 'mike'),
+('emmerance', 'prudent'),
+('prudent', 'brad'),
+('prudent', 'mike'),
+('valentin', 'brad'),
 ('valentin', 'emmerance'),
-('valentin', 'enzo'),
-('valentin', 'james');
+('valentin', 'mike');
 
 -- --------------------------------------------------------
 
@@ -92,27 +89,8 @@ CREATE TABLE `messages` (
   `reciever` varchar(100) NOT NULL,
   `body` varchar(1000) NOT NULL,
   `date_` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` varchar(10) NOT NULL DEFAULT 'unread',
-  `story_id` int(11) DEFAULT NULL
+  `status` varchar(10) NOT NULL DEFAULT 'unread'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`id`, `sender`, `reciever`, `body`, `date_`, `status`, `story_id`) VALUES
-(273, 'valentin', 'emmerance', 'Heey', '2021-10-17 13:53:05', 'read', NULL),
-(378, 'emmerance', 'valentin', '................', '2021-10-17 14:00:05', 'read', NULL),
-(1081, 'emmerance', 'valentin', 'hhhh', '2021-10-17 13:56:16', 'read', NULL),
-(1599, 'valentin', 'emmerance', 'kk', '2021-10-17 13:55:56', 'read', NULL),
-(1878, 'valentin', 'emmerance', 'What is up bro?', '2021-10-17 13:52:54', 'read', NULL),
-(2007, 'valentin', 'emmerance', 'ok', '2021-10-17 13:55:49', 'read', NULL),
-(844035, 'emmerance', 'coder', 'I just like that (:', '2021-10-17 18:50:17', 'read', 35),
-(1297330, 'emmerance', 'coder', 'ver nice girl keep it up!', '2021-10-17 18:49:53', 'read', 35),
-(1709858, 'valentin', 'james', 'Great story bro!', '2021-10-17 16:32:23', 'read', 32),
-(1936440, 'valentin', 'james', 'Great story bro!', '2021-10-17 16:51:42', 'read', 32),
-(2994141, 'emmerance', 'coder', 'Hey there men', '2021-10-17 18:55:16', 'read', NULL),
-(3063088, 'james', 'valentin', 'Okay', '2021-10-17 16:33:25', 'read', NULL);
 
 -- --------------------------------------------------------
 
@@ -151,15 +129,9 @@ CREATE TABLE `stories` (
 --
 
 INSERT INTO `stories` (`id`, `username`, `image`, `description`, `expired`, `created_at`, `has_media`, `media`, `views`) VALUES
-(29, 'james', '', 'James story', 0, '2021-10-17 09:17:52', 0, '', 0),
-(30, 'valentin', '_E__Mine_new_downloads_pics_IMG_20210815_153435_264%20(1).png(Moto G4).png', 'This is my life', 0, '2021-10-17 09:18:32', 0, '', 0),
-(31, 'valentin', '127.0.0.1_5500_index.html(Galaxy S5).png', '', 0, '2021-10-17 09:22:14', 0, '', 0),
-(32, 'james', 'IMG_20210328_162440.jpg', 'That\'s me brother', 0, '2021-10-17 09:26:20', 0, '', 0),
-(33, 'valentin', '', 'H', 0, '2021-10-17 09:26:58', 0, '', 0),
-(34, 'emmerance', 'IMG_20210328_163224.jpg', 'Here is my boi', 0, '2021-10-17 11:41:36', 0, '', 0),
-(35, 'coder', '', 'Coding forever', 0, '2021-10-17 16:04:48', 0, '', 0),
-(36, 'james', '', '||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||', 0, '2021-10-17 17:50:36', 0, '', 0),
-(37, 'james', 'IMG_20210328_163156.jpg', 'Akumiro ni icupa', 0, '2021-10-17 18:33:36', 0, '', 0);
+(26, 'valentin', 'IMG_20210328_162644.jpg', 'Remembering old times', 0, '2021-10-16 17:54:02', 0, '', 0),
+(27, 'mike', '', 'Hey brothers;\r\nGood whishes</br>Bye!', 0, '2021-10-16 18:12:49', 0, '', 0),
+(28, 'mike', '', '\r\n                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores mollitia non, optio reprehenderit quisquam explicabo est et, velit magnam laudantium atque quae ex aut, laboriosam ullam cum aliquid voluptatem. Sit soluta fuga dolorum tenetur ipsam quaerat magni eveniet illo minus molestiae ullam animi dolor aspernatur suscipit consectetur perspiciatis, voluptates ut dolorem corporis deleniti sequi rem? Odit animi quas corrupti sequi perferendis maxime voluptatum rerum totam temporibus sapiente aperiam minima vitae, magni impedit assumenda illo unde quam consequuntur. Dicta modi nemo atque, explicabo ab et similique, maiores velit ipsa voluptatem omnis molestiae eum facilis iusto, ratione doloremque officia tempore culpa necessitatibus corporis? Pariatur, esse maxime placeat hic eligendi, sapiente debitis dolorum nulla obcaecati reiciendis alias autem atque sit ipsum numquam dignissimos, voluptatem quam aspernatur vitae error corrupti! Distinctio aut illum molestias, pariatur itaque aliquam dolores, voluptas vitae quaerat culpa provident. Similique laudantium modi harum autem fuga possimus sapiente porro quam quis maxime, numquam asperiores amet, aut praesentium. Aperiam, quibusdam repudiandae aliquid praesentium corrupti amet asperiores? Omnis exercitationem earum eos minus ullam suscipit! Inventore itaque nulla eligendi dicta illo qui, similique excepturi expedita. Alias, voluptatem ad sunt delectus eum eveniet ab! Quos, fugit! Quis adipisci, modi amet voluptatem laborum reiciendis quaerat explicabo dolore. Laboriosam voluptatum quae adipisci cum suscipit beatae cumque temporibus iste deleniti inventore, vero at in veniam voluptatibus corrupti sunt numquam nobis sint non commodi hic a vitae natus dicta. Et amet repellendus quia! Velit natus saepe, expedita alias provident atque amet quis ex voluptatem qui illo dignissimos ut exercitationem obcaecati dolorem placeat, repellendus dolorum quasi laboriosam ullam laborum fugit, pariatur veritatis. Voluptatem blanditiis veniam rerum quo ipsam? Rem explicabo unde voluptate. Placeat omnis vel accusamus harum necessitatibus vero, fugit cupiditate odio obcaecati in soluta corporis consequuntur saepe recusandae, pariatur hic, expedita repellendus minima suscipit laborum maiores iusto deleniti rerum!', 0, '2021-10-16 18:13:34', 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -177,39 +149,9 @@ CREATE TABLE `story_views` (
 --
 
 INSERT INTO `story_views` (`story_id`, `username`) VALUES
-(29, 'emmerance'),
-(29, 'james'),
-(29, 'valentin'),
-(30, 'coder'),
-(30, 'emmerance'),
-(30, 'enzo'),
-(30, 'james'),
-(30, 'valentin'),
-(31, 'coder'),
-(31, 'emmerance'),
-(31, 'enzo'),
-(31, 'james'),
-(31, 'valentin'),
-(32, 'emmerance'),
-(32, 'james'),
-(32, 'valentin'),
-(33, 'coder'),
-(33, 'emmerance'),
-(33, 'enzo'),
-(33, 'james'),
-(33, 'valentin'),
-(34, 'coder'),
-(34, 'emmerance'),
-(34, 'james'),
-(34, 'valentin'),
-(35, 'coder'),
-(35, 'emmerance'),
-(36, 'emmerance'),
-(36, 'james'),
-(36, 'valentin'),
-(37, 'emmerance'),
-(37, 'james'),
-(37, 'valentin');
+(26, 'mike'),
+(27, 'valentin'),
+(28, 'valentin');
 
 -- --------------------------------------------------------
 
@@ -228,22 +170,19 @@ CREATE TABLE `users` (
   `about` varchar(500) NOT NULL DEFAULT 'Unknown',
   `profile_pic` varchar(500) NOT NULL DEFAULT 'default.png',
   `address` varchar(100) DEFAULT 'Unknown',
-  `status` varchar(10) NOT NULL DEFAULT 'offline',
-  `code` varchar(200) NOT NULL,
-  `verify` varchar(200) NOT NULL
+  `status` varchar(10) NOT NULL DEFAULT 'offline'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`fname`, `lname`, `email`, `dob`, `sex`, `username`, `password`, `about`, `profile_pic`, `address`, `status`, `code`, `verify`) VALUES
-('Coder', 'Coder', 'coder@gmail.com', '2007-04-04', 'Male', 'coder', '$2y$10$SFie0/hXXy5Znxehn6/m4uC5tshaT.kuD1rd1r6itsxJ.ZAtg3VZq', 'Unknown', 'default.png', 'Unknown', 'online', '', ''),
-('GUHIRWA', 'Emmerance', 'emme@gmail.com', '2001-04-03', 'Male', 'emmerance', '$2y$10$Lu4SGkKtTLrw1jFhiU8.veO59Bh/MMLneSleQdh2zObyw9kd/b4qC', 'Unknown', 'default.png', 'Unknown', 'online', '', ''),
-('Prudent', 'Ngiri', 'enzo@gmail.com', '1999-05-04', 'Male', 'enzo', '$2y$10$mi.GemZWjuwd2G2plWjsuerfJUiLCUjsdPOc3X/qKXiSyeXrrT.IK', 'Unknown', 'default.png', 'Unknown', 'offline', '', ''),
-('baddest', 'james', 'james@gmail.com', '2008-11-06', 'Male', 'james', '$2y$10$znKxMtSem8vQA3B7S7eJrOTKwHGHHYIL6yV2/tmN5oCQ94YvRmiXS', 'Unknown', '165.jpg', 'Unknown', 'offline', '', ''),
-('Mike', 'Brant', 'mike@gmail.com', '2004-08-14', 'Male', 'mike', '$2y$10$Ia/NVh5fo.wj5fECNPxtAeMVmAvTM5kYRxvhWI02XbiiJ6fizfN7K', 'Unknown', 'default.png', 'Unknown', 'offline', '', ''),
-('ISHIMWE', 'Valentin', 'ishimwevalentin3@gmail.com', '2002-09-20', 'Male', 'valentin', '$2y$10$v0asGwqFhvw9QaufwXTpdeRuWxZQnT8ijTqFT2CJgFf.NjarEuaQW', 'Unknown', 'default.png', 'Universe', 'offline', '737538', 'Verified');
+INSERT INTO `users` (`fname`, `lname`, `email`, `dob`, `sex`, `username`, `password`, `about`, `profile_pic`, `address`, `status`) VALUES
+('Brad', 'Scott', 'brad@gmail.com', '1997-03-03', 'Male', 'brad', '$2y$10$7FRz990qKqnLhUvUMvTPn.7io9p4KGUKCH8BJbJCufbDxqS2dFqFu', 'Unknown', '275.jpg', 'Unknown', 'offline'),
+('GUHIRWA', 'Emmerance', 'emme@gmail.com', '2001-04-03', 'Male', 'emmerance', '$2y$10$Lu4SGkKtTLrw1jFhiU8.veO59Bh/MMLneSleQdh2zObyw9kd/b4qC', 'Unknown', 'default.png', 'Unknown', 'online'),
+('Mike', 'Brant', 'mike@gmail.com', '2004-08-14', 'Male', 'mike', '$2y$10$n5jj32S3gtpyUyQr/xTY9eMM0PjCoB/h6boah/dinfq3N/AxOUJ26', 'Unknown', 'default.png', 'Unknown', 'online'),
+('Ngirnshuti', 'Prudent', 'prudent@gmail.com', '1999-04-03', 'Male', 'prudent', '$2y$10$s25VXCrAUfn/mJsmhIXP7ObalVFSQzPlF18.Ay8ErYQEWfBGdLaB.', 'Unknown', 'default.png', 'Unknown', 'offline'),
+('ISHIMWE', 'Valentin', 'ishimwevalentin3@gmail.com', '2001-02-02', 'Male', 'valentin', '$2y$10$DmotpxFL.1//H/J9tRFXPONFFdOqiXB25LV17NV6PPoOElJhwlOXm', 'Unknown', '523.jpg', 'Unknown', 'online');
 
 --
 -- Indexes for dumped tables
@@ -277,8 +216,7 @@ ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `date_` (`date_`),
   ADD KEY `reciever` (`reciever`),
-  ADD KEY `sender` (`sender`),
-  ADD KEY `story_reply_message` (`story_id`);
+  ADD KEY `sender` (`sender`);
 
 --
 -- Indexes for table `posts`
@@ -316,7 +254,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3063089;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3342;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -328,7 +266,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `stories`
 --
 ALTER TABLE `stories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables
@@ -360,8 +298,7 @@ ALTER TABLE `friends`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `reciever` FOREIGN KEY (`reciever`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `sender` FOREIGN KEY (`sender`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `story_reply_message` FOREIGN KEY (`story_id`) REFERENCES `stories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `sender` FOREIGN KEY (`sender`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `posts`

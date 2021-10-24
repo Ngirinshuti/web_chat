@@ -1,14 +1,17 @@
-let noStory = false;
-if (!story) {
-    noStory = true;
-}
+// make story items clickable
+const storyItems = document.querySelectorAll('.storyItem')
+storyItems.forEach(item => {
+    item.addEventListener('click', e => {
+        item.querySelector(".storyLink").click();
+    })
+})
 
 const storyPreviewContainer = document.querySelector(".storyPreviewContainer");
 const storyPreviewProgressContainer = storyPreviewContainer.querySelector(
-    ".storyPreviewProgressContainer"
+    ".storyPreviewProgressContainer.active"
 );
 const storyPreview = storyPreviewContainer.querySelector(".storyPreview");
-const storyPreviewProgress = storyPreviewContainer.querySelector(
+const storyPreviewProgress = storyPreviewProgressContainer.querySelector(
     ".storyPreviewProgress"
 );
 const nextBtn = storyPreviewContainer.querySelector(".storyPreviewNextButton");
@@ -16,6 +19,7 @@ const prevBtn = storyPreviewContainer.querySelector(".storyPreviewPrevButton");
 const replyInput = storyPreviewContainer.querySelector(
     "form > input[name='reply']"
 );
+const video = storyPreview.querySelector("video");
 
 let paused = false;
 let progressPercentage = 0;
@@ -25,13 +29,24 @@ init();
 function init() {
     storyPreviewProgress.style.width = "0";
 
-    interval = setInterval(animateProgessBar, 50);
+    if (replyInput) {
+        replyInput.addEventListener("focus", (e) => {
+            paused = true;
+        });
+        replyInput.addEventListener("blur", (e) => {
+            paused = false;
+        });
+    }
 
-    replyInput.addEventListener("focus", (e) => {
-        paused = true;
-    });
-    replyInput.addEventListener("blur", (e) => {
-        paused = false;
+    if (!video) {
+        interval = setInterval(animateProgessBar, 50);
+        return;
+    }
+
+    handleVideo();
+    video.addEventListener("timeupdate", (e) => {
+        progressPercentage = (video.currentTime * 100) / video.duration;
+        storyPreviewProgress.style.width = `${progressPercentage}%`;
     });
 }
 
@@ -45,4 +60,62 @@ function animateProgessBar() {
         nextBtn?.click();
         // progressPercentage = 0
     }
+}
+
+function handleVideo() {
+    const playIcon = storyPreview.querySelector("[data-play-icon");
+    const pauseIcon = storyPreview.querySelector("[data-pause-icon");
+    const volumeIcon = storyPreview.querySelector("[data-volume-icon");
+
+    const playVideo = (e) => video.play();
+    const pauseVideo = (e) => video.pause();
+    const toggleMuteVideo = (e) => {
+        video.muted = !video.muted;
+    };
+
+    playIcon.addEventListener("click", playVideo);
+    pauseIcon.addEventListener("click", pauseVideo);
+    volumeIcon.addEventListener("click", toggleMuteVideo);
+
+    const removeListeners = e => {
+        playIcon.removeEventListener('click', playVideo)
+        pauseIcon.removeEventListener('click', pauseVideo)
+        volumeIcon.removeEventListener("click", toggleMuteVideo);
+    }
+
+    video.addEventListener('error', removeListeners);
+    video.addEventListener('ended', removeListeners);
+
+    video.addEventListener("click", (e) => {
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    });
+
+    const handleVolume = () => {
+        video.play()
+        let src = volumeIcon.querySelector("img").src;
+        if (video.muted) {
+            volumeIcon.querySelector("img").src = src.replace("up", "off");
+        } else {
+            volumeIcon.querySelector("img").src = src.replace("off", "up");
+        }
+    };
+
+
+    handleVolume();
+
+    video.addEventListener("volumechange", handleVolume);
+
+    video.addEventListener("pause", (e) => {
+        pauseIcon.classList.add("hide");
+        playIcon.classList.remove("hide");
+    });
+
+    video.addEventListener("play", (e) => {
+        pauseIcon.classList.remove("hide");
+        playIcon.classList.add("hide");
+    });
 }

@@ -12,7 +12,7 @@
 if (!class_exists('Message')) {
     include "./../classes/message.php";
 }
-require __DIR__ ."/DB.php";
+require __DIR__ . "/DB.php";
 
 /**
  * Help interacting with stories
@@ -51,7 +51,7 @@ class Story
         string $image = "",
         string $description = "",
         string $media = ""
-    ) {
+    ): Story {
         $has_media = empty($media) ? 0 : 1;
 
         $sql = <<<Q
@@ -80,16 +80,17 @@ class Story
      *
      * @param integer $id Story id
      *
-     * @return Story
+     * @return Story|bool
      */
-    public static function findOne(int $id)
+    public static function findOne(int $id): Story|bool
     {
         // make database connection
         $connection = DB::conn();
 
-        // query to select story that was just created
+        // query to select story
         $new_stmt = $connection->prepare(
-            "SELECT * FROM `stories` WHERE `id` = '$id'"
+            "SELECT * FROM `stories` WHERE `id` = '$id'
+            AND DATEDIFF(NOW(), `created_at`) < 1"
         );
 
         $new_stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
@@ -103,12 +104,13 @@ class Story
      *
      * @param string $username Stories owner
      *
-     * @return array
+     * @return Story[] array of stories
      */
-    public static function getUserStories(string $username)
+    public static function getUserStories(string $username):array
     {
+        // $last
         $stmt = DB::conn()->prepare(
-            "SELECT * FROM `stories` WHERE username=:username"
+            "SELECT * FROM `stories` WHERE `username`=:username AND DATEDIFF(NOW(), `created_at`) < 1"
         );
 
         $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
@@ -136,6 +138,7 @@ class Story
             SELECT *, COUNT(`stories`.`id`) as story_count
              FROM `stories` WHERE EXISTS
              (SELECT * FROM `friends` WHERE ($we_are_friends))
+             AND DATEDIFF(NOW(), `created_at`) < 1
              GROUP BY `stories`.`username`
              ORDER BY `stories`.`created_at` DESC
         QUERY;
@@ -159,22 +162,24 @@ class Story
      */
     public static function viewStory(string $username, int $story_id)
     {
-        try {
-
-            $query = "INSERT INTO `story_views`
-        (`username`, `story_id`) VALUES (:user,:story)";
-            $stmt = DB::conn()->prepare($query);
-
-            $stmt->execute([':user' => $username, ':story' => $story_id]);
-            $stmt2 = DB::conn()->prepare(
-                "UPDATE `stories` SET views += 1 WHERE `story_id`= ?"
-            );
-            $stmt2->execute([$story_id]);
-        } catch (PDOException $e) {
+        if (Story::findOne($story_id)->viewedBy($username)) {
+            return true;
         }
 
-        return (bool) $stmt->rowCount();
+        $query = "INSERT INTO `story_views`
+        (`username`, `story_id`) VALUES (:user,:story)";
+        $stmt = DB::conn()->prepare($query);
+
+        $stmt->execute([':user' => $username, ':story' => $story_id]);
+
+        $stmt2 = DB::conn()->prepare(
+            "UPDATE `stories` SET `stories`.`views` = `stories`.`views` + 1 WHERE `id`= ?"
+        );
+        $stmt2->execute([$story_id]);
+
+        return ($stmt->rowCount() && $stmt2->rowCount());
     }
+
 
 
     /**
@@ -199,7 +204,19 @@ class Story
      */
     public static function findByUser(string $username)
     {
-        $stmt = DB::conn()->prepare("SELECT *, (SELECT COUNT(`stories`.`id`) FROM `stories` WHERE `username` = ? ) as story_count FROM `stories`  WHERE `username`=? ORDER BY created_at ASC LIMIT 1");
+        $stmt = DB::conn()->prepare(
+            "SELECT *,
+            IFNULL(
+                (SELECT COUNT(`stories`.`id`)
+                FROM `stories` WHERE `username` = ?
+                AND DATEDIFF(NOW(), `created_at`) < 1),
+                0
+            ) as story_count
+            FROM `stories`
+            WHERE `username`=?
+            AND DATEDIFF(NOW(), `stories`.`created_at`) <= 1
+            ORDER BY created_at ASC LIMIT 1"
+        );
         $stmt->execute([$username, $username]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
 
@@ -218,9 +235,27 @@ class Story
     {
 
         $sent = (new Message(DB::conn(), $username))->send_message(
-            $this->username, $message, $this->id
+            $this->username,
+            $message,
+            $this->id
         );
 
         return $sent === true;
+    }
+
+    /**
+     * Check user viewed a story
+     *
+     * @param string $username user name
+     *
+     * @return bool
+     */
+    public function viewedBy(string $username)
+    {
+        $sql = "SELECT * FROM `story_views` WHERE `username` =:username AND `story_id` = :story";
+        $stmt = DB::conn()->prepare($sql);
+        $stmt->execute([':username' => $username, ':story' => $this->id]);
+
+        return $stmt->rowCount() > 0;
     }
 }
